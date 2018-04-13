@@ -6,7 +6,7 @@ from helpers import parse_webhooks, convert_UTC
 app = Flask(__name__)
 
 @app.route("/runs", methods=['POST'])
-def time_states(webhooks):
+def status_timer(webhooks):
 	"""Takes in state changes data of a test run 
 		and returns time spent on each state.
 		>>> time_states('test-runs.json')
@@ -20,6 +20,7 @@ def time_states(webhooks):
 	# tuple[0] = status
 	# tuple[1] = start time
 	# tuple[2] = end time
+	print("I'm here!")
 	data = parse_webhooks(webhooks)
 	state_times = {}
 	for d in data:
@@ -39,4 +40,4 @@ def time_states(webhooks):
 
 # ------------------------------------------------- #
 
-app.listen(port=8080)
+app.run(port=8080)
