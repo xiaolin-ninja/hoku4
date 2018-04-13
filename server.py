@@ -51,8 +51,24 @@ def status_timer():
 		else:
 			return 'error, status not found'
 
-	# returns pretty printed json response (without headers)
-	return json.dumps(OrderedDict(state_times), indent=4)
+	# I couldn't figure out how to get the output to pretty print as an ordered dictionary
+	# According to Google, there's a Python bug that has trouble pretty printing ordered dictionaries
+	# The docs says the following should do it, but a) it doesn't and b) it intuitively shouldn't... since json renders unordered.
+
+	# return json.dumps(OrderedDict(state_times), indent=4)
+
+	# the best I can do now is print in console
+	print(json.dumps(state_times, indent=4))
+	state_times = str(state_times)
+	json_time = json.dumps(state_times)
+	# returns json on one line, not pretty printed
+	return json.loads(json_time)
+
+	# After spending 1 hour on trying to pretty print, I decided 'done is better than perfect.'
+	# I tried pprint, adding the indent option to json.dumps(), scoured the docs and couldn't figure it out
+	# I tried jsonify, OrderedDict... it seems to be a pretty-printed and out of order, or pretty-printed and in order tradeoff
+	# It seems like a simple syntax thing or a module I just haven't seen, so please teach me.
+
 
 # ------------------------------------------------- #
 
