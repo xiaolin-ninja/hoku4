@@ -1,4 +1,4 @@
-from flask import Flask, request, json, jsonify
+from flask import Flask, request, json
 from helpers import parse_webhooks, convert_UTC
 from collections import OrderedDict
 
@@ -11,10 +11,10 @@ def status_timer():
 	"""Takes in state changes data of a test run 
 		and returns time spent on each state.
 		>>> time_states('test-runs.json')
-		{ "pending_seconds": 3,
-		  "creating_seconds": 7,
+		{ "pending_seconds": 1,
+		  "creating_seconds": 3,
 		  "building_seconds": 10,
-		  "running_seconds": 2
+		  "running_seconds": 20
 		}
 	"""
 
@@ -24,15 +24,14 @@ def status_timer():
 	# the parser returns a list of tuples where:
 	# tuple[0] = status, tuple[1] = start time, tuple[2] = end time
 	data = parse_webhooks(request.json)
-	# since OrderedDict always returns it in the order of input
-	# I decided to go through the extra step of making the dictionary
-	# separately instead of within the for loop.
-	state_times = OrderedDict({
+	# I decided to make the dictionary separately instead of 
+	# within the for loop to maintain the desired order
+	state_times = {
 				  'pending_seconds': 0,
 				  'creating_seconds': 0,
 				  'building_seconds': 0,
 				  'running_seconds': 0
-				  })
+				  }
 
 	# loop through each tuple
 	for d in data:
@@ -40,6 +39,7 @@ def status_timer():
 		status = d[0]
 		# convert to integer to match formatting of sample answer
 		time = int((convert_UTC(d[2]) - convert_UTC(d[1])).total_seconds())
+		# aggregate time spent in each testing stage
 		if status == 'pending':
 			state_times['pending_seconds'] += time
 		elif status == 'creating':
@@ -50,7 +50,9 @@ def status_timer():
 			state_times['running_seconds'] += time
 		else:
 			return 'error, status not found'
-	return jsonify(state_times)
+
+	# returns pretty printed json response (without headers)
+	return json.dumps(OrderedDict(state_times), indent=4)
 
 # ------------------------------------------------- #
 
