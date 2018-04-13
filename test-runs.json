@@ -20,7 +20,7 @@
 
       "app_setup": null,
       "commit_sha": "2834fb68521eb05fcd6847739fd2b5ecc9c27d6d",
-      
+
       "created_at": "2018-02-08T19:54:30Z",
       "updated_at": "2018-02-08T19:54:30Z",
 
@@ -35,10 +35,12 @@
       "source_blob_url": "https://codeload.github.com/house_stark/winter-is-coming/legacy.tar.gz/2834fb68521eb05fcd6847739fd2b5ecc9c27d6d",
       "warning_message": null
     },
+
     "actor": {
       "id": "15a9f4ca-daf2-4d7f-b9e3-6a5bb9164150",
       "email": "jsnow@stark.house"
     },
+    
     "action": "create",
     "version": "application/vnd.heroku+json; version=3.ci",
     "resource": "test-run",
